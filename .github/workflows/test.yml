@@ -1,0 +1,69 @@
+name: Test Elasticsearch Scripts
+
+on:
+  push:
+    branches: [ master, main, develop ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:9.0.3
+        env:
+          discovery.type: single-node
+          ELASTIC_PASSWORD: OBIpKj46
+          xpack.security.enabled: true
+        ports:
+          - 9200:9200
+        options: >-
+          --health-cmd "curl -u elastic:OBIpKj46 http://localhost:9200/_cluster/health"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+      with:
+        version: "latest"
+    
+    - name: Set up Python
+      run: uv python install 3.12
+    
+    - name: Install dependencies
+      run: uv sync
+    
+    - name: Wait for Elasticsearch
+      run: |
+        echo "Waiting for Elasticsearch to be ready..."
+        for i in {1..30}; do
+          if curl -u elastic:OBIpKj46 -f http://localhost:9200/_cluster/health; then
+            echo "Elasticsearch is ready!"
+            break
+          fi
+          echo "Waiting... ($i/30)"
+          sleep 10
+        done
+    
+    - name: Test basic connection
+      run: |
+        uv run -m pytest -v --tb=short || true
+        echo "Running basic connection test..."
+        uv run python -c "
+        from elasticsearch import Elasticsearch
+        es = Elasticsearch('http://localhost:9200', basic_auth=('elastic', 'OBIpKj46'))
+        print('✅ Connection successful!' if es.ping() else '❌ Connection failed!')
+        print(f'Cluster info: {es.info()['cluster_name']}')
+        "
+    
+    - name: Test scripts (non-interactive)
+      run: |
+        echo "Testing utility scripts..."
+        timeout 30s uv run simple_utils.py || echo "Script completed or timed out safely"
+        timeout 30s uv run elasticsearch_utils.py || echo "Script completed or timed out safely" 

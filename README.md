@@ -9,6 +9,8 @@ Elasticsearch를 활용한 검색 엔진 학습을 위한 Python 실습 프로�
 - `korean_search.py` - 한국어 검색 최적화
 - `bulk_operations.py` - 벌크 인덱싱과 대용량 데이터 처리
 - `real_world_search.py` - 실제 검색 서비스 시뮬레이션
+- `pdf_search.py` - PDF 파일 첨부파일 검색 (attachment 플러그인)
+- `pdf_legal_search.py` - 법령 PDF 전문 검색 시스템 (stalker.pdf 특화)
 - `simple_utils.py` - 간단한 유틸리티 함수들
 - `elasticsearch_utils.py` - 고급 클러스터 관리 도구
 
@@ -75,6 +77,12 @@ uv run bulk_operations.py
 # 실제 검색 서비스 시뮬레이션
 uv run real_world_search.py
 
+# PDF 파일 검색 (고급!)
+uv run pdf_search.py
+
+# 법령 PDF 전문 검색 (Ctrl+F 스타일)
+uv run pdf_legal_search.py
+
 # 간단한 유틸리티
 uv run simple_utils.py
 
@@ -100,11 +108,21 @@ uv run elasticsearch_utils.py
 6. ✏️ 문서 업데이트
 7. 🔧 복합 쿼리
 
+### 법령 검색 시스템 (pdf_legal_search.py)
+⚖️ **stalker.pdf 전문 검색**
+- 🔍 키워드 검색: `스토킹`, `처벌`, `신고` 등
+- 📝 정확한 구문: `"스토킹범죄의 정의"`
+- 💡 Ctrl+F 스타일: 즉석 키워드 하이라이트
+- 📊 법령 특화: 조문, 항목별 정확한 매칭
+- 🎯 대화형 검색: 실시간 법령 조회
+
 ### 고급 기능
 - **부분 텍스트 검색**: 제목이나 내용의 일부만으로 검색
 - **퍼지 검색**: 오타가 있어도 유사한 결과 찾기
 - **와일드카드 검색**: `*`과 `?` 문자 활용
 - **한국어 최적화**: 한글 텍스트 분석 및 검색
+- **PDF 파일 검색**: attachment 플러그인으로 PDF 내용 검색
+- **법령 전문 검색**: Ctrl+F 스타일의 정확한 법령 키워드 검색
 - **벌크 인덱싱**: 대량 데이터 효율적 처리
 - **집계 분석**: 통계 및 그룹화 기능
 
