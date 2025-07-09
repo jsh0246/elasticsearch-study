@@ -1,0 +1,44 @@
+[project]
+name = "elasticsearch-study"
+version = "0.1.0"
+description = "Elasticsearch 학습을 위한 Python 실습 프로젝트 - 기본부터 고급 검색 기능까지"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.12"
+authors = [
+    { name = "Elasticsearch Study", email = "study@example.com" },
+]
+keywords = ["elasticsearch", "search", "study", "tutorial", "python"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Education",
+    "Topic :: Database :: Front-Ends",
+    "Topic :: Internet :: WWW/HTTP :: Indexing/Search",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "elasticsearch>=9.0.2",
+]
+
+[project.urls]
+Homepage = "https://github.com/your-username/elasticsearch-study"
+Repository = "https://github.com/your-username/elasticsearch-study.git"
+Documentation = "https://github.com/your-username/elasticsearch-study#readme"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = []
+
+[project.scripts]
+es-basic = "main:main"
+es-advanced = "advanced_search:main"
+es-korean = "korean_search:main"
+es-bulk = "bulk_operations:main"
+es-real = "real_world_search:main"
+es-utils = "simple_utils:main"
